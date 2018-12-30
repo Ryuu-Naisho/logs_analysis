@@ -39,7 +39,7 @@ Or
 ```sh
 $ py log_analysis.py
 ```
-###References:
+### References:
 
 to_char()
 https://www.postgresql.org/docs/current/functions-formatting.html
