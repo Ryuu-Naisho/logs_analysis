@@ -39,3 +39,12 @@ Or
 ```sh
 $ py log_analysis.py
 ```
+###References:
+
+to_char()
+https://www.postgresql.org/docs/current/functions-formatting.html
+
+SUM(CASE....
+Udacity student hub 
+Jakob K.
+1:01 AM, Dec 28
