@@ -1,4 +1,4 @@
-#!/usr/bin/env Python 2.7.12
+#!/usr/bin/env python
 
 import psycopg2
 
@@ -29,7 +29,7 @@ def get_popular_articles():
 
     for article in articles:
 
-        print ('"%s" => %s views'%(article[0],article[1]))
+        print ('"%s" => %s views' %(article[0], article[1]))
 
     return
 
@@ -66,7 +66,7 @@ def get_popular_authros():
 
     for author in authors:
 
-        print ('%s => %s views'%(author[0],author[1]))
+        print ('%s => %s views' %(author[0], author[1]))
 
     return
 
@@ -98,7 +98,7 @@ def get_days_percent_error():
 
     for error in errors:
 
-        print ('%s => %s%% errors'%(error[0],error[1]))
+        print ('%s => %s%% errors' %(error[0], serror[1]))
 
     return
 
