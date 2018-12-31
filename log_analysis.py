@@ -97,7 +97,7 @@ def get_days_percent_error():
         
     return
 
-
-get_popular_articles()
-get_popular_authros()
-get_days_percent_error()
+if __name__ == '__main__':
+    get_popular_articles()
+    get_popular_authros()
+    get_days_percent_error()
