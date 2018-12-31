@@ -71,11 +71,16 @@ def get_days_percent_error():
     1% of the errors. Aggregated by the '404 NOT FOUND' status codes collected.
     '''
 
-    query = '''SELECT date,
-    percent FROM (SELECT to_char(time,'MON DD YYYY') as date,
-    round(100.0*SUM(case log.status when '404 NOT FOUND' then 1 else 0
-    end)/count(log.status),2) as percent FROM log GROUP BY date ORDER BY
-    percent DESC) as subq WHERE percent>1.00;'''
+    query = '''SELECT to_char(date, 'FMMonth DD, YYYY'), percent
+           FROM (
+                SELECT time::date AS date,
+                round(100.0*SUM(case log.status when '404 NOT FOUND'
+                then 1 else 0 end)/count(log.status),2) as percent
+                FROM log
+                GROUP BY date
+                ORDER BY percent DESC
+            ) as subq
+            WHERE percent>1.00;'''
 
     db = psycopg2.connect(database=DBName)
     cursor = db.cursor()
@@ -88,7 +93,7 @@ def get_days_percent_error():
     print ('\n')
 
     for date, error in errors:
-        print ('{} => {}%%'.format(date,error))
+        print ('{} => {}%'.format(date,error))
         
     return
 
