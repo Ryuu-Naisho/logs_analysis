@@ -24,8 +24,8 @@ def get_popular_articles():
     print ('Top Three articles:')
     print ('\n')
     
-    for article in articles:
-        print ('"%s" => %s views' %(article[0], article[1]))
+    for title, views in articles:
+        print('"{}" => {} views'.format(title, views))
         
     return
 
@@ -58,8 +58,8 @@ def get_popular_authros():
     print ('Most popular article authors: ')
     print ('\n')
     
-    for author in authors:
-        print ('%s => %s views' %(author[0], author[1]))
+    for author, views in authors:
+        print ('{} => {} views'.format(author,views))
         
     return
 
@@ -87,8 +87,8 @@ def get_days_percent_error():
     print ('Days which requests lead to more than 1% of the errors:')
     print ('\n')
 
-    for error in errors:
-        print ('%s => %s%% errors' %(error[0], error[1]))
+    for date, error in errors:
+        print ('{} => {}%%'.format(date,error))
         
     return
 
