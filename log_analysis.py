@@ -5,28 +5,27 @@ import psycopg2
 DBName = "news"
 
 
-
 def get_popular_articles():
     '''Prints the top three popular articles.
 
     Prints the top three most viewed articles. Includes the title and
     number of views, ordered by view descending.
     '''
-    
+
     query = 'SELECT title, views FROM articles_log ORDER BY views DESC LIMIT 3'
     db = psycopg2.connect(database=DBName)
     cursor = db.cursor()
     cursor.execute(query)
     articles = cursor.fetchall()
     db.close()
-    
-    print ('\n')
-    print ('Top Three articles:')
-    print ('\n')
-    
+
+    print('\n')
+    print('Top Three articles:')
+    print('\n')
+
     for title, views in articles:
         print('"{}" => {} views'.format(title, views))
-        
+
     return
 
 
@@ -37,7 +36,7 @@ def get_popular_authros():
     views of each of their articles. Prints the author's name and total
     views.
     '''
-    
+
     query = '''SELECT authors.name as author, total_views FROM authors,
 
     (SELECT articles_log.author_id as author_id, SUM(articles_log.views)
@@ -47,20 +46,20 @@ def get_popular_authros():
     ORDER BY total_views DESC) as subq WHERE authors.id =
 
     subq.author_id;'''
-    
+
     db = psycopg2.connect(database=DBName)
     cursor = db.cursor()
     cursor.execute(query)
     authors = cursor.fetchall()
     db.close()
-    
-    print ('\n')
-    print ('Most popular article authors: ')
-    print ('\n')
-    
+
+    print('\n')
+    print('Most popular article authors: ')
+    print('\n')
+
     for author, views in authors:
-        print ('{} => {} views'.format(author,views))
-        
+        print('{} => {} views'.format(author, views))
+
     return
 
 
@@ -87,15 +86,16 @@ def get_days_percent_error():
     cursor.execute(query)
     errors = cursor.fetchall()
     db.close()
-    
-    print ('\n')
-    print ('Days which requests lead to more than 1% of the errors:')
-    print ('\n')
+
+    print('\n')
+    print('Days which requests lead to more than 1% of the errors:')
+    print('\n')
 
     for date, error in errors:
-        print ('{} => {}%'.format(date,error))
-        
+        print('{} => {}%'.format(date, error))
+
     return
+
 
 if __name__ == '__main__':
     get_popular_articles()
