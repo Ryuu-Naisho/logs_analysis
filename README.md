@@ -1,19 +1,42 @@
 # Logs Analysis
 
-Retrieves the three most popular articles, most popular article authors, and which day(s) had more than 1% of requests lead to errors. Using a secret wizardry called sql and python. Files that should be included are log_analysis.py, log_analysis_output.txt, and README.md 
+This project simulates a real-world tasks while working for a fictional news site and sets up a prefilled mock PostgreSQL database to query using a secret wizardry called sql and python with psycopg2. 
+
+This project is an internal reporting tool that answers these questions: 
+- What are the most popular three articles of all time?
+- Who are the most popular article authors of all time?
+- On which days did more than 1% of requests lead to errors?
 
 ## Requirements:
  
-- Python 2.7 installed on your machine or virtual machine
+- Python 2.7 and psql installed on your machine or virtual machine
 - Terminal application 
-- Files (log_analysis.py and newsdata.sql)
+- Files:    
+    - log_analysis.py
+    - [newsdata.sql](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
+        - Make sure to click the link above to download newsdata.zip and you will need to unzip it in the same directory as log_analysis.py
+        - To unzip in Windows 7, 8, and 10 you will have to right click the zip file and click Extract all then just follow the instructions.
+        - To unzip in a Mac, just double click the zip file and it will unzip in the residing directory 
 
 ### Usage
-
-Open your terminal program in the directory hosting your log analysis files. First create a VIEW called "articles_log".
+1. You need to load the data into the directory hosting your log analysis files. To do so, you will need to run this command in your terminal (in the same directory as the log_analysis files). 
+```sh
+psql -d news -f newsdata.sql
+```
+ 2. Create a VIEW called "articles_log".
 
 ``` sh
-CREATE VIEW articles_log as SELECT articles.author as author_id, articles.title as title, log_views as views FROM articles JOIN (SELECT regexp_replace(path,'/article/','') as slug, COUNT(path) as log_views FROM log WHERE status='200 OK' GROUP BY slug ORDER BY log_views DESC) as subq ON articles.slug LIKE subq.slug ORDER BY views DESC;
+CREATE VIEW articles_log as
+SELECT articles.author as author_id, articles.title AS title, log_views AS views
+FROM articles
+JOIN (
+  SELECT path, COUNT(path) AS log_views
+  FROM log
+  WHERE status='200 OK'
+  GROUP BY path
+) as subq
+ON '/article/' || articles.slug = subq.path
+ORDER BY views DESC;
 ```
 **Output:**
 ```sh
@@ -31,9 +54,13 @@ news=> SELECT * FROM articles_log;
 (8 rows)
 ```
 
-After that, type:
+ 3. Exit out of psql, type the command below and hit enter. Or just open a new terminal in the same directory.
+ ```sh
+ news => \q
+ ```
+ 4. Run log_analysis.py 
 ``` sh
-$ Python log_analysis.py
+$ python log_analysis.py
 ```
 Or 
 ```sh
